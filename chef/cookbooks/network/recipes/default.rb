@@ -157,13 +157,15 @@ def crowbar_interfaces(bond_list)
   max_pref = 10000
   net_pref = nil  # name of network prefered as default route
   node["crowbar"]["network"].each { |name, network | 
-    r_pref= integer(network["router_pref"]) rescue 10000
+    r_pref = 10000
+    r_pref= Integer(network["router_pref"]) if network["router_pref"]
+    log("eval router from #{name}, pref #{r_pref}")  { level :warn }
     if (r_pref < max_pref)
       max_pref = r_pref
       net_pref = name
     end
   }
-
+  log("will allow routers from #{net_pref}") { level :warn }
   node["crowbar"]["network"].each do |netname, network|
     next if netname == "bmc"
     allow_gw = (netname == net_pref)
@@ -254,15 +256,6 @@ def crowbar_interfaces(bond_list)
   team_mode = machine_team_mode
   node["network"]["teaming"]["mode"] = team_mode
   sort_interfaces(res)
-end
-
-# Make sure that the /etc/network/if-up.d/upstart file is gone
-# We manage apache2 (and others), it shouldn't
-case node[:platform]
-when "ubuntu","debian"
-  file "/etc/network/if-up.d/upstart" do
-    action :delete
-  end
 end
 
 package "bridge-utils"
