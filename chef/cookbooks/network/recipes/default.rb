@@ -155,7 +155,7 @@ def crowbar_interfaces(bond_list)
   machine_team_mode = nil # seems that we can only have 1 bonding mode is possible per machine
   ## find most prefered network to use a default gw
   max_pref = 10000
-  net_pref = nil  # name of network prefered as default route
+  net_pref = "admin"  # name of network prefered as default route - default admin net.
   node["crowbar"]["network"].each { |name, network | 
     r_pref = 10000
     r_pref= Integer(network["router_pref"]) if network["router_pref"]
