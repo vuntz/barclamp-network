@@ -271,6 +271,16 @@ class NetworkService < ServiceObject
         bc["allocated_by_name"] = {}
         db = ProposalObject.new bc
         db.save
+      else
+        oldnet = bc["network"].clone
+        %{router router_pref}.each do |attr|
+          if net.has_key? attr
+            bc["network"][attr] = net[attr]
+          else
+            bc["network"].delete(attr)
+          end
+        end
+        db.save if bc["network"] != oldnet
       end
     end
 
