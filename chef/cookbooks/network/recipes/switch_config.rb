@@ -101,7 +101,7 @@ search(:node, "*:*").each do |a_node|
   end
 end
 
-directory "/opt/dell/switch" do
+directory "/var/lib/crowbar/switch" do
   mode 0755
   owner "root"
   group "root"
@@ -112,7 +112,7 @@ switch_config.each do |switch_name, a_switch_config|
   # For testing on a virtual admin node
   switch_name = "virtual" if switch_name == -1
 
-  switch_config_file_name = "/opt/dell/switch/#{switch_name.gsub( /:/, '_')}_switch_config.json"
+  switch_config_file_name = "/var/lib/crowbar/switch/#{switch_name.gsub( /:/, '_')}_switch_config.json"
 
   template switch_config_file_name do
     mode 0644
