@@ -161,6 +161,7 @@ node["crowbar"]["network"].keys.sort{|a,b|
     Chef::Log.info("Using interface #{base_ifs[0]} for network #{name}")
     our_iface = base_ifs[0]
   else
+    # KEEP IN SYNC with default_team_mode in barclamp-network/chef/cookbooks/network/recipes/default.rb
     # We want a bond.  Figure out what mode it should be.  Default to 5
     team_mode = conduit_map[conduit]["team_mode"] ||
       (node["network"]["teaming"] && node["network"]["teaming"]["mode"]) || 5
